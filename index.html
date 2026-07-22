@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expensify Smart Tracking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+        <div class="circle circle-3"></div>
+    </div>
+    <div id="auth-section" class="flex-center">
+        <div class="glass-card auth-card" id="login-box">
+            <div class="logo-area"><i class="fas fa-wallet"></i></div>
+            <h2>Welcome Back</h2>
+            <p>Enter your details to manage your wealth</p>
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="login-user" placeholder="Username">
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="login-pass" placeholder="Password">
+            </div>
+            <button class="btn-primary" onclick="handleLogin()">Login to Dashboard</button>
+            <p class="toggle-text">New here? <span onclick="toggleAuth(true)">Create Account</span></p>
+        </div>
+
+        <div class="glass-card auth-card hidden" id="reg-box">
+            <div class="logo-area"><i class="fas fa-user-plus"></i></div>
+            <h2>Join Expensify</h2>
+            <p>Start your financial journey today</p>
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="reg-user" placeholder="Choose Username">
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="reg-pass" placeholder="Create Password">
+            </div>
+            <button class="btn-primary" onclick="handleRegister()">Sign Up Now</button>
+            <p class="toggle-text">Already a member? <span onclick="toggleAuth(false)">Login</span></p>
+        </div>
+    </div>
+
+    
+    <div id="dashboard-section" class="hidden">
+        <nav class="glass-nav">
+            <div class="nav-container">
+                <h1 class="brand"><i class="fas fa-chart-line"></i> Expensify<span>₹</span></h1>
+                <div class="nav-right">
+                    <span id="welcome-msg"></span>
+                    <button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="dashboard-grid">
+            <div class="panel-left">
+                <div class="glass-card stat-main">
+                    <div class="stat-content">
+                        <span>Total Monthly Spend</span>
+                        <h1 id="total-val">₹0.00</h1>
+                    </div>
+                    <div class="stat-icon"><i class="fas fa-indian-rupee-sign"></i></div>
+                </div>
+
+                <div class="glass-card">
+                    <h3><i class="fas fa-plus-circle"></i> New Expense</h3>
+                    <form id="expense-form" class="expense-form">
+                        <input type="text" id="desc" placeholder="What did you spend on?" required>
+                        <div class="form-row">
+                            <input type="number" id="amt" placeholder="Amount (₹)" required>
+                            <select id="cat" required>
+                                <option value="Food">🍔 Food</option>
+                                <option value="Travel">🚗 Travel</option>
+                                <option value="Bills">⚡ Bills</option>
+                                <option value="Shopping">🛍️ Shopping</option>
+                                <option value="Other">✨ Other</option>
+                            </select>
+                        </div>
+                        <input type="date" id="date" required>
+                        <button type="submit" class="btn-add">Add Transaction</button>
+                    </form>
+                </div>
+
+                <div class="glass-card">
+                    <h3><i class="fas fa-chart-pie"></i> Visual Breakdown</h3>
+                    <div class="chart-container">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-right">
+                <div class="glass-card list-container">
+                    <div class="list-header">
+                        <h3>Recent Transactions</h3>
+                        <div class="search-wrapper">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="search" placeholder="Filter history..." onkeyup="render()">
+                        </div>
+                    </div>
+                    
+                    <div class="filtered-banner">
+                        Filtered Result: <span id="filter-val">₹0.00</span>
+                    </div>
+
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Category</th>
+                                    <th>Amount</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="list">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
