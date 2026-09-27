@@ -3,135 +3,625 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Expensify Smart Tracking</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+
+    <meta name="description" content="Expensify - Smart personal expense and income tracker">
+    <meta name="theme-color" content="#0b1120">
+
+    <title>Expensify | Smart Finance Tracker</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <!-- Chart -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <div class="bg-animation">
-        <div class="circle circle-1"></div>
-        <div class="circle circle-2"></div>
-        <div class="circle circle-3"></div>
-    </div>
-    <div id="auth-section" class="flex-center">
-        <div class="glass-card auth-card" id="login-box">
-            <div class="logo-area"><i class="fas fa-wallet"></i></div>
-            <h2>Welcome Back</h2>
-            <p>Enter your details to manage your wealth</p>
-            <div class="input-group">
-                <i class="fas fa-user"></i>
-                <input type="text" id="login-user" placeholder="Username">
-            </div>
-            <div class="input-group">
-                <i class="fas fa-lock"></i>
-                <input type="password" id="login-pass" placeholder="Password">
-            </div>
-            <button class="btn-primary" onclick="handleLogin()">Login to Dashboard</button>
-            <p class="toggle-text">New here? <span onclick="toggleAuth(true)">Create Account</span></p>
-        </div>
 
-        <div class="glass-card auth-card hidden" id="reg-box">
-            <div class="logo-area"><i class="fas fa-user-plus"></i></div>
-            <h2>Join Expensify</h2>
-            <p>Start your financial journey today</p>
-            <div class="input-group">
-                <i class="fas fa-user"></i>
-                <input type="text" id="reg-user" placeholder="Choose Username">
-            </div>
-            <div class="input-group">
-                <i class="fas fa-lock"></i>
-                <input type="password" id="reg-pass" placeholder="Create Password">
-            </div>
-            <button class="btn-primary" onclick="handleRegister()">Sign Up Now</button>
-            <p class="toggle-text">Already a member? <span onclick="toggleAuth(false)">Login</span></p>
-        </div>
+    <!-- Background -->
+    <div class="background">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="grid-overlay"></div>
     </div>
 
-    
-    <div id="dashboard-section" class="hidden">
-        <nav class="glass-nav">
-            <div class="nav-container">
-                <h1 class="brand"><i class="fas fa-chart-line"></i> Expensify<span>₹</span></h1>
-                <div class="nav-right">
-                    <span id="welcome-msg"></span>
-                    <button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    <!-- Toast -->
+    <div id="toast-container"></div>
+
+    <!-- ================= AUTH ================= -->
+
+    <section id="auth-section" class="auth-page">
+
+        <div class="auth-wrapper">
+
+            <div class="auth-brand">
+                <div class="brand-logo">
+                    <i class="fa-solid fa-wallet"></i>
                 </div>
+
+                <h1>Expensify<span>₹</span></h1>
+
+                <p>
+                    Take control of your money.
+                    Track smarter. Spend better.
+                </p>
             </div>
+
+            <!-- Login -->
+            <div class="auth-card" id="login-box">
+
+                <div class="auth-header">
+                    <span class="eyebrow">WELCOME BACK</span>
+                    <h2>Login to your account</h2>
+                    <p>Continue managing your finances.</p>
+                </div>
+
+                <form id="login-form">
+
+                    <div class="input-group">
+                        <i class="fa-solid fa-user"></i>
+                        <input
+                            type="text"
+                            id="login-user"
+                            placeholder="Username"
+                            autocomplete="username"
+                            required
+                        >
+                    </div>
+
+                    <div class="input-group password-group">
+                        <i class="fa-solid fa-lock"></i>
+                        <input
+                            type="password"
+                            id="login-pass"
+                            placeholder="Password"
+                            autocomplete="current-password"
+                            required
+                        >
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            onclick="togglePassword('login-pass', this)"
+                            aria-label="Show password"
+                        >
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <span>Login to Dashboard</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+
+                </form>
+
+                <p class="auth-switch">
+                    New to Expensify?
+                    <button onclick="toggleAuth(true)">Create account</button>
+                </p>
+
+            </div>
+
+            <!-- Register -->
+            <div class="auth-card hidden" id="reg-box">
+
+                <div class="auth-header">
+                    <span class="eyebrow">GET STARTED</span>
+                    <h2>Create your account</h2>
+                    <p>Start tracking your finances today.</p>
+                </div>
+
+                <form id="register-form">
+
+                    <div class="input-group">
+                        <i class="fa-solid fa-user"></i>
+                        <input
+                            type="text"
+                            id="reg-user"
+                            placeholder="Choose username"
+                            autocomplete="username"
+                            minlength="3"
+                            required
+                        >
+                    </div>
+
+                    <div class="input-group password-group">
+                        <i class="fa-solid fa-lock"></i>
+                        <input
+                            type="password"
+                            id="reg-pass"
+                            placeholder="Create password"
+                            autocomplete="new-password"
+                            minlength="4"
+                            required
+                        >
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            onclick="togglePassword('reg-pass', this)"
+                        >
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <span>Create Account</span>
+                        <i class="fa-solid fa-user-plus"></i>
+                    </button>
+
+                </form>
+
+                <p class="auth-switch">
+                    Already have an account?
+                    <button onclick="toggleAuth(false)">Login</button>
+                </p>
+
+            </div>
+
+            <div class="auth-footer">
+                <i class="fa-solid fa-shield-halved"></i>
+                Your demo data is stored locally in your browser.
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ================= DASHBOARD ================= -->
+
+    <section id="dashboard-section" class="hidden">
+
+        <!-- Navbar -->
+        <nav class="navbar">
+
+            <div class="nav-inner">
+
+                <div class="nav-brand">
+                    <div class="mini-logo">
+                        <i class="fa-solid fa-wallet"></i>
+                    </div>
+
+                    <div>
+                        <strong>Expensify<span>₹</span></strong>
+                        <small>Smart Finance</small>
+                    </div>
+                </div>
+
+                <div class="nav-actions">
+
+                    <div class="user-pill">
+                        <div class="avatar" id="user-avatar">H</div>
+
+                        <div class="user-info">
+                            <span>Welcome</span>
+                            <strong id="welcome-msg">User</strong>
+                        </div>
+                    </div>
+
+                    <button class="btn-icon logout-btn" onclick="logout()" title="Logout">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
         </nav>
 
-        <div class="dashboard-grid">
-            <div class="panel-left">
-                <div class="glass-card stat-main">
-                    <div class="stat-content">
-                        <span>Total Monthly Spend</span>
-                        <h1 id="total-val">₹0.00</h1>
-                    </div>
-                    <div class="stat-icon"><i class="fas fa-indian-rupee-sign"></i></div>
+
+        <main class="dashboard">
+
+            <!-- Hero -->
+            <section class="dashboard-heading">
+
+                <div>
+                    <span class="eyebrow">FINANCIAL OVERVIEW</span>
+                    <h1>Your money, <span>under control.</span></h1>
+                    <p id="current-date">Today</p>
                 </div>
 
-                <div class="glass-card">
-                    <h3><i class="fas fa-plus-circle"></i> New Expense</h3>
-                    <form id="expense-form" class="expense-form">
-                        <input type="text" id="desc" placeholder="What did you spend on?" required>
-                        <div class="form-row">
-                            <input type="number" id="amt" placeholder="Amount (₹)" required>
-                            <select id="cat" required>
-                                <option value="Food">🍔 Food</option>
-                                <option value="Travel">🚗 Travel</option>
-                                <option value="Bills">⚡ Bills</option>
-                                <option value="Shopping">🛍️ Shopping</option>
-                                <option value="Other">✨ Other</option>
+                <div class="heading-actions">
+                    <button class="btn-secondary" onclick="exportCSV()">
+                        <i class="fa-solid fa-download"></i>
+                        Export CSV
+                    </button>
+
+                    <button class="btn-primary small" onclick="scrollToForm()">
+                        <i class="fa-solid fa-plus"></i>
+                        Add Transaction
+                    </button>
+                </div>
+
+            </section>
+
+
+            <!-- Stats -->
+            <section class="stats-grid">
+
+                <div class="stat-card balance-card">
+                    <div class="stat-top">
+                        <span>Current Balance</span>
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-wallet"></i>
+                        </div>
+                    </div>
+
+                    <h2 id="balance-val">₹0.00</h2>
+
+                    <div class="stat-footer">
+                        <span id="balance-status">
+                            Start tracking your money
+                        </span>
+                    </div>
+                </div>
+
+
+                <div class="stat-card income-card">
+                    <div class="stat-top">
+                        <span>Total Income</span>
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-arrow-trend-up"></i>
+                        </div>
+                    </div>
+
+                    <h2 id="income-val">₹0.00</h2>
+
+                    <div class="stat-footer">
+                        <span>All recorded income</span>
+                    </div>
+                </div>
+
+
+                <div class="stat-card expense-card">
+                    <div class="stat-top">
+                        <span>Monthly Spending</span>
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-arrow-trend-down"></i>
+                        </div>
+                    </div>
+
+                    <h2 id="total-val">₹0.00</h2>
+
+                    <div class="stat-footer">
+                        <span id="month-label">This month</span>
+                    </div>
+                </div>
+
+
+                <div class="stat-card transaction-card">
+                    <div class="stat-top">
+                        <span>Transactions</span>
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-receipt"></i>
+                        </div>
+                    </div>
+
+                    <h2 id="transaction-count">0</h2>
+
+                    <div class="stat-footer">
+                        <span>Recorded transactions</span>
+                    </div>
+                </div>
+
+            </section>
+
+
+            <!-- Main Grid -->
+            <section class="main-grid">
+
+                <!-- Left -->
+                <div class="left-column">
+
+                    <!-- Add Transaction -->
+                    <div class="panel" id="transaction-panel">
+
+                        <div class="panel-header">
+                            <div>
+                                <span class="eyebrow">QUICK ACTION</span>
+                                <h3 id="form-title">Add Transaction</h3>
+                            </div>
+
+                            <div class="panel-icon">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </div>
+                        </div>
+
+                        <form id="expense-form">
+
+                            <div class="type-selector">
+
+                                <button
+                                    type="button"
+                                    class="type-btn active expense-type"
+                                    data-type="expense"
+                                >
+                                    <i class="fa-solid fa-arrow-down"></i>
+                                    Expense
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="type-btn income-type"
+                                    data-type="income"
+                                >
+                                    <i class="fa-solid fa-arrow-up"></i>
+                                    Income
+                                </button>
+
+                            </div>
+
+                            <input type="hidden" id="transaction-type" value="expense">
+
+                            <label>Description</label>
+
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-file-lines"></i>
+
+                                <input
+                                    type="text"
+                                    id="desc"
+                                    placeholder="e.g. Lunch, Salary, Netflix..."
+                                    maxlength="80"
+                                    required
+                                >
+                            </div>
+
+
+                            <div class="form-grid">
+
+                                <div>
+                                    <label>Amount</label>
+
+                                    <div class="input-wrapper">
+                                        <span class="currency">₹</span>
+
+                                        <input
+                                            type="number"
+                                            id="amt"
+                                            placeholder="0.00"
+                                            min="0.01"
+                                            step="0.01"
+                                            required
+                                        >
+                                    </div>
+                                </div>
+
+
+                                <div>
+                                    <label>Category</label>
+
+                                    <div class="input-wrapper select-wrapper">
+                                        <i class="fa-solid fa-layer-group"></i>
+
+                                        <select id="cat" required>
+                                            <option value="Food">Food</option>
+                                            <option value="Travel">Travel</option>
+                                            <option value="Bills">Bills</option>
+                                            <option value="Shopping">Shopping</option>
+                                            <option value="Education">Education</option>
+                                            <option value="Entertainment">Entertainment</option>
+                                            <option value="Health">Health</option>
+                                            <option value="Salary">Salary</option>
+                                            <option value="Freelance">Freelance</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <label>Date</label>
+
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-calendar"></i>
+
+                                <input
+                                    type="date"
+                                    id="date"
+                                    required
+                                >
+                            </div>
+
+
+                            <div class="form-actions">
+
+                                <button
+                                    type="submit"
+                                    class="btn-primary"
+                                    id="submit-btn"
+                                >
+                                    <i class="fa-solid fa-plus"></i>
+                                    Add Transaction
+                                </button>
+
+                                <button
+                                    type="button"
+                                    class="btn-cancel hidden"
+                                    id="cancel-edit"
+                                    onclick="cancelEdit()"
+                                >
+                                    Cancel
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+
+                    <!-- Chart -->
+                    <div class="panel chart-panel">
+
+                        <div class="panel-header">
+
+                            <div>
+                                <span class="eyebrow">ANALYTICS</span>
+                                <h3>Spending Breakdown</h3>
+                            </div>
+
+                            <div class="chart-total" id="chart-total">
+                                ₹0
+                            </div>
+
+                        </div>
+
+                        <div class="chart-box">
+                            <canvas id="myChart"></canvas>
+
+                            <div id="chart-empty" class="chart-empty">
+                                <i class="fa-solid fa-chart-pie"></i>
+                                <p>Add expenses to see your breakdown.</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Right -->
+                <div class="right-column">
+
+                    <div class="panel transactions-panel">
+
+                        <div class="panel-header transactions-heading">
+
+                            <div>
+                                <span class="eyebrow">ACTIVITY</span>
+                                <h3>Transactions</h3>
+                            </div>
+
+                            <button
+                                class="btn-icon"
+                                onclick="clearAllTransactions()"
+                                title="Clear all transactions"
+                            >
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+
+                        </div>
+
+
+                        <!-- Filters -->
+                        <div class="filters">
+
+                            <div class="search-box">
+                                <i class="fa-solid fa-search"></i>
+
+                                <input
+                                    type="text"
+                                    id="search"
+                                    placeholder="Search transactions..."
+                                >
+                            </div>
+
+                            <select id="category-filter">
+                                <option value="all">All Categories</option>
+                                <option value="Food">Food</option>
+                                <option value="Travel">Travel</option>
+                                <option value="Bills">Bills</option>
+                                <option value="Shopping">Shopping</option>
+                                <option value="Education">Education</option>
+                                <option value="Entertainment">Entertainment</option>
+                                <option value="Health">Health</option>
+                                <option value="Salary">Salary</option>
+                                <option value="Freelance">Freelance</option>
+                                <option value="Other">Other</option>
                             </select>
+
                         </div>
-                        <input type="date" id="date" required>
-                        <button type="submit" class="btn-add">Add Transaction</button>
-                    </form>
-                </div>
 
-                <div class="glass-card">
-                    <h3><i class="fas fa-chart-pie"></i> Visual Breakdown</h3>
-                    <div class="chart-container">
-                        <canvas id="myChart"></canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="panel-right">
-                <div class="glass-card list-container">
-                    <div class="list-header">
-                        <h3>Recent Transactions</h3>
-                        <div class="search-wrapper">
-                            <i class="fas fa-search"></i>
-                            <input type="text" id="search" placeholder="Filter history..." onkeyup="render()">
+
+                        <div class="filtered-banner">
+                            <div>
+                                <span>Filtered total</span>
+                                <strong id="filter-val">₹0.00</strong>
+                            </div>
+
+                            <i class="fa-solid fa-filter"></i>
                         </div>
-                    </div>
-                    
-                    <div class="filtered-banner">
-                        Filtered Result: <span id="filter-val">₹0.00</span>
+
+
+                        <div id="empty-state" class="empty-state hidden">
+
+                            <div class="empty-icon">
+                                <i class="fa-solid fa-receipt"></i>
+                            </div>
+
+                            <h4>No transactions found</h4>
+
+                            <p>
+                                Add your first transaction to start
+                                tracking your finances.
+                            </p>
+
+                            <button
+                                class="btn-primary small"
+                                onclick="scrollToForm()"
+                            >
+                                <i class="fa-solid fa-plus"></i>
+                                Add Transaction
+                            </button>
+
+                        </div>
+
+
+                        <div class="table-wrapper" id="table-wrapper">
+
+                            <table>
+
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Description</th>
+                                        <th>Category</th>
+                                        <th>Type</th>
+                                        <th>Amount</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="list"></tbody>
+
+                            </table>
+
+                        </div>
+
                     </div>
 
-                    <div class="table-scroll">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Description</th>
-                                    <th>Category</th>
-                                    <th>Amount</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody id="list">
-
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
+
+            </section>
+
+
+            <!-- Footer -->
+            <footer class="dashboard-footer">
+                <span>Expensify₹</span>
+                <span>Personal Finance Tracker</span>
+            </footer>
+
+        </main>
+
+    </section>
+
 
     <script src="script.js"></script>
+
 </body>
 </html>
