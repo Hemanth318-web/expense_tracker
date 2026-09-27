@@ -46,3 +46,12 @@ expense_tracker/
 ├── script.js       # Application logic
 ├── README.md       # Project documentation
 └── .gitignore      # Git ignored files
+## Screenshots
+
+### Dashboard
+
+![Expensify Dashboard](./Screenshot_2026-09-27-17-32-06-56_40deb401b9ffe8e1df2f1cc5ba480b12.jpg)
+
+### Analytics & Transactions
+
+![Expensify Analytics](./Screenshot_2026-09-27-17-32-20-82_40deb401b9ffe8e1df2f1cc5ba480b12.jpg)
